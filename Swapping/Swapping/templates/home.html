@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Swapping</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.css" rel="stylesheet">
+    
+    <link href="../static/css/bootstrap-tables.css" rel="stylesheet">
+    
+    
+    <!-- Tables -->
+    <link href="../static/css/tablecloth.css" rel="stylesheet">
+    
+    <!-- jQuery Boostrap Validator -->
+	<link rel="stylesheet" href="../static/css/bootstrapValidator.css"/>
+	
+	<link rel="stylesheet" type="text/css" media="screen"
+     href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
+     
+  
+	
+	<!-- Upload Images With Drag and Drop -->
+    <link href="../static/css/basic.css" rel="stylesheet">
+    <link href="../static/css/dropzone.css" rel="stylesheet">
+    
+	<!-- Notifications -->
+	<link href="../static/css/pnotify.custom.min.css" media="all" rel="stylesheet" type="text/css">
+    
+    <!-- Clock -->
+    <link href="../static/css/standalone.css" media="all" rel="stylesheet" type="text/css">
+    <link href="../static/css/clockpicker.css" media="all" rel="stylesheet" type="text/css">
+    
+    <!-- Xeditable -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+    
+    <link rel="stylesheet" type="text/css" href="../static/css/jquery.datetimepicker.css" />
+    
+    <!-- Font Awesome -->
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="../static/css/swapping.css" rel="stylesheet">
+      
+    <!-- datetimer-->
+    <link href="../static/css/datepicker.css" rel="stylesheet">
+    <link href="../static/css/star-rating.min.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="../static/css/star-rating.css" rel="stylesheet">
+    
+    <!-- Gallery -->
+	<link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+	<link rel="stylesheet" href="../static/css/bootstrap-image-gallery.css">
+    
+</head>
+
+<body>
+	
+	<figure id="figure_loading" style="padding:0 3em;overflow:visible;"><div class="col-lg-12 col-md-12 col-sm-12 spinner"></div></figure>
+	
+   
+
+    <div class="container">
+
+        <div class="row headerback"">
+            <div class="col-md-8">
+                <img class="img-responsive img-rounded" src="../static/images/littleLogoSwappin.png" style="height: 75px;">
+                <!-- take out img-rounded if you don't want the rounded corners on the image -->
+            </div>
+            
+            
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <nav class="navbar navbar-default" role="navigation">
+                  <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                      </button>
+                    </div>
+					
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                      <ul class="nav navbar-nav" style="margin-left: -15px;">
+                        <li id="home" class="active"><a href="/home"><i class="fa fa-home"></i> home</a></li>
+                       
+                        <!--  <li><a href="#" onclick="swapping_with_money_view_show_all();">Link</a></li>-->
+                        
+						 <li id="items_view_container"> 
+                       		<a href="#" onclick="item_view_get_all_items(1);"><i class="fa fa-desktop"></i> Items</a>
+                       	</li>     
+                       	<li id="services_view_container"> 
+                       		<a href="#" onclick="service_view_get_all_items(1);"><i class="fa fa-map-marker"></i> Services</a>
+                       	</li>                  
+                       	<li id="shopping_cart_container"> 
+                       		<a href="#" onclick="shopping_cart_view_show();"><i class="fa fa-shopping-cart"></i></a>
+                       	</li>
+                       	
+                       
+                       	<li id="search_box">
+		                       	 <div class="input-group" style="width: 95%;">
+		                    <input type="text" class="form-control" name="search_text" id="search_text">
+		                    <span class="input-group-btn">
+		                        <button style="height: 34px;" class="btn btn-default" type="button" onclick= "search_view_begin_search();" name="search_proucts" id="search_proucts">
+		                            <span class="glyphicon glyphicon-search"></span>
+		                        </button>
+		                    </span>
+		                </div>
+		                <!-- /input-group -->
+		                </li>
+                     </ul>
+                       {% if not user.is_authenticated %}
+
+					   <ul class="nav navbar-nav navbar-right" style="margin-left: 0px;">
+							  	<li><button class="btn btn-primary navbar-btn" id="sign_in_i18n" data-toggle="modal" data-target=".bs-example-modal-sm">Sign In <span class="glyphicon glyphicon-user"></span></button></li>
+						</ul>
+                        <!-- Small modal -->
+                       
+                       <div id="loginModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+                          <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-header" id="sign_in_title_i18n">
+                                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                  <h1 class="text-center">Login</h1>
+                              </div>
+                              <div class="modal-body">
+                                  <form method="POST"  id="form_login" action="#" class="form col-md-12 center-block">
+                                  
+                                    <div class="form-group">
+                                      <input name="username" id="username" type="text" class="form-control input-lg" placeholder="Username">
+                                    </div>
+                                    <div class="form-group">
+                                      <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
+                                    </div>
+<!--                                     <div class="form-group"> -->
+<!-- 			                          	<a href="{% url 'socialauth_begin' 'twitter' %}"><img style="width: 29%;" src="../static/images/sign-in-twitter.png" /></a> -->
+<!--                                     	<a href="{% url 'socialauth_begin' 'facebook' %}"><img style="width: 29%;" src="../static/images/login-facebook.jpg" /></a> -->
+<!--                                     	<a href="{% url 'socialauth_begin' 'google-oauth2' %}"><img src="../static/images/sign_in_with_google.jpg" /></a> -->
+<!--                                     </div> -->
+                                    <div class="form-group">
+                                      <button class="btn btn-primary btn-lg btn-block" onclick="person_login();">Sign In</button>
+                                      <span class="pull-right"><a href="#" id="sign_in_register" onclick="user_view_create_forms(null);" data-dismiss="modal">Register</a></span><span><a id="sign_in_help" href="#">Need help?</a></span>
+                                    </div>
+                                  </form>
+                              </div>
+                              <div class="modal-footer" style="border-top: 0px;">
+                                  <div class="col-md-12">
+                                  <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                  </div>    
+                              </div>
+                          </div>
+                          </div>
+                          
+                        </div><!-- modal -->
+                       
+
+                      {% endif %} 
+                      {% if user.is_authenticated and user.is_staff %}
+
+                        	<div class="btn-group">
+							  <a class="btn btn-primary" href="#" data-toggle="dropdown"><i class="fa fa-user fa-fw"></i>&nbsp;{% block username %}{{user.username}}{%endblock%}</a>
+							  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+							    <span class="fa fa-caret-down"></span></a>
+							    <ul class="dropdown-menu">
+								    <li><a id="my_profile" href="#" onclick="administrator_controller_get({% block userIdProfile %} {{user.id}} {%endblock%});"><i class="fa fa-user fa-fw"></i> My Profile</a></li>
+								    <li><a href="#" onclick="administrator_view_show_form({% block userId %} {{user.id}} {%endblock%});"><i class="fa fa-pencil fa-fw"></i> Edit</a></li>
+								    <li><a href="#" onclick="administrator_view_show_ban_user();"><i class="fa fa-ban fa-fw"></i> Ban User</a></li>
+								    <li class="divider"></li>
+								    <li><a href="#" onclick="administrator_view_show_form();"><i class="fa fa-users fa-fw"></i>  Add admin</a></li>
+								    <li class="divider"></li>
+								    <li><a href="#"><i class="fa fa-cogs fa-fw"></i> Settings</a></li>
+								    <li><a href="#" onclick="administrator_controller_logout();"><i class="fa fa-sign-out fa-fw"></i>Logout</a></li>
+								</ul>
+							</div>
+
+                        {% endif %}
+                        {% if user.is_authenticated and not user.is_staff %}
+                        <ul class="nav navbar-nav navbar-right" style="margin-left: -2px;">
+                        	<div class="btn-group navbar-btn navbar-right">
+							  <a class="btn btn-primary" href="#" data-toggle="dropdown"><i class="fa fa-user fa-fw"></i>&nbsp;{% block username2 %}{{user.username}}{%endblock%}</a>
+							  <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+							    <span class="fa fa-caret-down"></span></a>
+							  <ul class="dropdown-menu">
+							    <li><a id="my_profile" href="#" onclick="user_view_show_profile_data({% block user_show2 %} {{user.id}} {%endblock%});refreshLanguage();"><i class="fa fa-user fa-fw"></i> My Profile</a></li>
+							     
+							 	<li class="divider"></li>
+							    <li><a id="my_items" href="#" onclick="item_view_list_item();refreshLanguage();"><i class="fa fa-desktop"></i> My Items</a></li>
+							  	<li><a id="my_services" href="#" onclick="show_all_service({% block list_services%} {{user.id}} {%endblock%});refreshLanguage();"><i class="fa fa-map-marker"></i> My Services</a></li>
+							    <li class="divider"></li>
+							    <li><a id="mailbox" href="#" onclick="show_all_message({% block mailbox%} {{user.id}} {%endblock%});refreshLanguage();"><i class="fa fa-envelope"></i> MailBox</a></li>
+
+							    <li class="divider"></li>
+							    <li><a id="my_swaps" href="#" onclick="swapping_without_money_controller_get_all(1,{% block usersettings3 %} {{user.id}} {%endblock%});refreshLanguage();" ><i class="fa fa-exchange"></i> My Swaps </a></li>
+							    <li class="divider"></li>
+							    <li><a id="complaints" href="#"  onclick="complaint_view_list_complaints();refreshLanguage();"><i class="fa fa-thumbs-o-down"></i> Complaints</a></li>
+							    
+							    <li class="divider"></li>
+							    <li><a href="#" onclick="user_controller_logout();"><i class="fa fa-sign-out fa-fw"></i>  Logout</a></li>
+							    <li><a id="buy_credits" href="#"  onclick="credit_view_buy_credits({% block buyCredits %}{{user.id}}{%endblock%});refreshLanguage();"><i class="fa fa-dollar"></i> Buy credits</a></li>
+							
+							  </ul>
+							</div>
+						</ul>
+
+							
+						{% endif %}
+
+                    </div><!-- /.navbar-collapse -->
+                  </div><!-- /.container-fluid -->
+                </nav>
+            </div>
+        </div>
+
+ <!--advertises colum-->
+
+        <!--sides-->
+         <div class="col-md-3 col-sm-12 col-xs-12 rightside">
+          
+            <!-- /well -->
+            
+            <div class="well col-md-12 col-sm-12 col-xs-12">
+                <h4 id="for_sale">For sale!</h4>
+                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                  <!-- Indicators -->
+                  <ol class="carousel-indicators">
+                    <!--  <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>-->
+                  </ol>
+					
+                  <!-- Wrapper for slides -->
+                  <div class="carousel-inner" id="carrousel_premium">
+                    
+                    
+                  </div> 
+
+                  <!-- Controls -->
+                  <a class="carousel-control" href="#carousel-example-generic" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                  </a>
+                  <a class="carousel-control" href="#carousel-example-generic" data-slide="next" style="right: 0; left: auto;">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                  </a>
+                </div>
+            </div>
+
+            <!-- /well -->
+        	 <!-- well 2 Advertises -->
+            <div class="well col-md-12 col-sm-12 col-xs-12">
+                <h4 id="featured">Featured Ads</h4>
+                <div id="carousel-example-generic2" class="carousel slide" data-ride="carousel">
+                  <!-- Indicators -->
+                  <ol class="carousel-indicators">
+                    <li data-target="#carousel-example-generic2" data-slide-to="0" class="active"></li>
+                    <li data-target="#carousel-example-generic2" data-slide-to="1"></li>
+                    <li data-target="#carousel-example-generic2" data-slide-to="2"></li>
+                    <li data-target="#carousel-example-generic2" data-slide-to="3"></li>
+                    <li data-target="#carousel-example-generic2" data-slide-to="4"></li>
+                  </ol>
+
+                  <!-- Wrapper for slides -->
+                  <div class="carousel-inner">
+                    <div class="item active">
+                      <img style="width:100%;"  src="/static/images/sierra_extreme/sierra_extreme1.jpg" alt="">
+                    </div>
+                    <div class="item">
+                      <img style="width:100%;" src="/static/images/sierra_extreme/sierra_extreme2.jpg" alt="">
+                    </div>
+                    <div class="item">
+                      <img style="width:100%;" src="/static/images/sierra_extreme/sierra_extreme3.jpg" alt="">
+                    </div>
+                    <div  class="item">
+                      <img style="width:100%;" src="/static/images/sierra_extreme/sierra_extreme4.jpg" alt="">
+                    </div>
+                    <div class="item">
+                      <img style="width:100%;" src="/static/images/sierra_extreme/sierra_extreme5.jpg" alt="">
+                    </div>
+                  </div> 
+
+                  <!-- Controls -->
+                  <a class="carousel-control" href="#carousel-example-generic2" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                  </a>
+                  <a class="carousel-control" href="#carousel-example-generic2" data-slide="next" style="right: 0; left: auto;">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                  </a>
+                </div>
+            </div>
+            <!-- /well -->
+        </div>
+        <div class="col-md-9 col-sm-12 col-xs-12" id="content-body" >
+        
+            <!-- advertises -->
+            <div class="row" id="row1">
+
+                <div class="col-md-4 col-sm-12 col-xs-12 portfolio-item" style="display:none;" id="product1">
+
+                    <div class="thumbnail" >
+                        <img id="thumbnail1" src="http://placehold.it/800x500" alt="">
+                        <div class="caption">
+                            <p id="description1" style="overflow: hidden;">
+                            	Loading...
+                            </p>
+                            <hr class="productHr">
+                            <p id="user-info1" style="margin:0;">
+                            	<span id="user-username1"></span>
+                            	{% if user.is_authenticated and not user.is_staff %}
+                                <span id="product-actions-1"></span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div id="extra1" class="caption2">
+                    		<h4>Thumbnail Headline</h4>
+                    		<p id="big_description1">short thumbnail description</p>
+                    	<p><a id="message1" class="btn btn-info" ><i class="fa fa-envelope-o"></i> Send Message</a>
+                    	<p><a id="swap1" class="btn btn-info" ><i class="fa fa-exchange"></i> Join up!</a>
+                    	
+                </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-xs-12 portfolio-item" style="display:none;" id="product2">
+                    <div class="thumbnail">
+                        <img id="thumbnail2" src="http://placehold.it/800x500" alt="">
+                        <div class="caption">
+                            <p id="description2" style="overflow: hidden;">Loading...</p>
+                            <hr class="productHr">
+                            <p id="user-info2" style="margin:0;">
+                            <span id="user-username2"></span>
+                            {% if user.is_authenticated and not user.is_staff %}
+                               <span id="product-actions-2"></span>
+                            {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div id="extra2" class="caption2">
+                    		<h4>Thumbnail Headline</h4>
+                    		<p id="big_description2">short thumbnail description</p>
+                    	<p><a  class="btn btn-info" onclick="message_view_create_form();"><i class="fa fa-envelope-o"></i> Send Message</a>
+                    	<p><a id="swap2" class="btn btn-info" ><i class="fa fa-exchange"></i> Join up!</a>
+                    </div>
+                </div>
+
+                 <div class="col-md-4 col-sm-12 col-xs-12 portfolio-item" style="display:none;" id="product3">
+                    <div class="thumbnail">
+                        <img id="thumbnail3" src="http://placehold.it/800x500" alt="">
+                        <div class="caption">
+                            <p id="description3" style="overflow: hidden;">Loading...</p>
+                            <hr class="productHr">
+                            <p id="user-info3" style="margin:0;">
+                            <span id="user-username3"></span>
+                            {% if user.is_authenticated and not user.is_staff %}
+                               <span id="product-actions-3"></span>
+                            {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div id="extra3" class="caption2">
+                    		<h4>Thumbnail Headline</h4>
+                    		<p id="big_description3">short thumbnail description</p>
+                    	<p><a  class="btn btn-info" onclick="message_view_create_form();"><i style="margin-top: 5px;"  class="pull-right fa fa-envelope-o"></i> Send Message</a>
+                    	<p><a id="swap3" class="btn btn-info" ><i class="fa fa-exchange"></i> Join up!</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row" id="row2">
+
+                <div class="col-md-4 col-sm-12 col-xs-12 portfolio-item" style="display:none;" id="product4">
+                    <div class="thumbnail">
+                        <img id="thumbnail4" src="http://placehold.it/800x500" alt="">
+                        <div class="caption">
+                            <p id="description4" style="overflow: hidden;">Loading...</p>
+                            <hr class="productHr">
+                            <p id="user-info4" style="margin:0;">
+                            <span id="user-username4"></span>
+                            {% if user.is_authenticated and not user.is_staff %}
+                                <span id="product-actions-4"></span>
+                            {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div id="extra4" class="caption2">
+                    		<h4>Thumbnail Headline</h4>
+                    		<p id="big_description4" >short thumbnail description</p>
+                    	<p><a  class="btn btn-info" onclick="message_view_create_form();"><i class="fa fa-envelope-o"></i> Send Message</a>
+                    	<p><a id="swap4" class="btn btn-info" ><i class="fa fa-exchange"></i> Join up!</a>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-xs-12 portfolio-item" style="display:none;" id="product5">
+                   <div class="thumbnail">
+                        <img id="thumbnail5" src="http://placehold.it/800x500" alt="">
+                        <div class="caption">
+                            <p id="description5" style="overflow: hidden;">Loading...</p>
+                            <hr class="productHr">
+                            <p id="user-info5" style="margin:0;">
+                            <span id="user-username5"></span>
+                            {% if user.is_authenticated and not user.is_staff %}
+                                <span id="product-actions-5"></span>
+                            {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div id="extra5" class="caption2">
+                    		<h4>Thumbnail Headline</h4>
+                    		<p id="big_description5">short thumbnail description</p>
+                    	<p><a  class="btn btn-info" onclick="message_view_create_form();"><i class="fa fa-envelope-o"></i> Send Message</a>
+                    	<p><a id="swap5" class="btn btn-info" ><i class="fa fa-exchange"></i> Join up!</a>
+                    </div>
+                </div>
+
+                 <div class="col-md-4 col-sm-12 col-xs-12 portfolio-item" style="display:none;" id="product6">
+                   <div class="thumbnail">
+                        <img id="thumbnail6" src="http://placehold.it/800x500" alt="">
+                        <div class="caption">
+                            <p id="description6" style="overflow: hidden;">Loading...</p>
+                            <hr class="productHr">
+                            <p id="user-info6" style="margin:0;">
+                            <span id="user-username6"></span>
+                            {% if user.is_authenticated and not user.is_staff %}
+                                <span id="product-actions-6"></span>
+                            {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div id="extra6" class="caption2">
+                    		<h4>Thumbnail Headline</h4>
+                    		<p id="big_description6">short thumbnail description</p>
+                    	<p><a  class="btn btn-info" onclick="message_view_create_form();"><i class="fa fa-envelope-o"></i> Send Message</a>
+                    	<p><a id="swap6" class="btn btn-info" ><i class="fa fa-exchange"></i> Join up!</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row" id="row3">
+
+                <div class="col-md-4 col-sm-12 col-xs-12 portfolio-item" style="display:none;" id="product7">
+                   <div class="thumbnail">
+                        <img id="thumbnail7" src="http://placehold.it/800x500" alt="">
+                        <div class="caption">
+                            <p id="description7" style="overflow: hidden;">Loading...</p>
+                            <hr class="productHr">
+                            <p id="user-info7" style="margin:0;">
+                            <span id="user-username7"></span>
+                            {% if user.is_authenticated and not user.is_staff %}
+                                <span id="product-actions-7"></span>
+                            {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div id="extra7" class="caption2">
+                    		<h4>Thumbnail Headline</h4>
+                    		<p id="big_description7">short thumbnail description</p>
+                    	<p><a  class="btn btn-info" onclick="message_view_create_form();"><i class="fa fa-envelope-o"></i> Send Message</a>
+                    	<p><a id="swap7" class="btn btn-info" ><i class="fa fa-exchange"></i> Join up!</a>
+                    </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 col-xs-12 portfolio-item" style="display:none;" id="product8">
+                  <div class="thumbnail">
+                        <img id="thumbnail8" src="http://placehold.it/800x500" alt="">
+                        <div class="caption">
+                            <p id="description8" style="overflow: hidden;">Loading...</p>
+                            <hr class="productHr">
+                            <p id="user-info8" style="margin:0;">
+                            <span id="user-username8"></span>
+                            {% if user.is_authenticated and not user.is_staff %}
+                                <span id="product-actions-8"></span>
+                            {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div id="extra8" class="caption2">
+                    		<h4>Thumbnail Headline</h4>
+                    		<p id="big_description8">short thumbnail description</p>
+                    	<p><a  class="btn btn-info" onclick="message_view_create_form();"><i class="fa fa-envelope-o"></i> Send Message</a>
+                    	<p><a id="swap8" class="btn btn-info" ><i class="fa fa-exchange"></i> Join up!</a>
+                    </div>
+                </div>
+
+                 <div class="col-md-4 col-sm-12 col-xs-12 portfolio-item" style="display:none;" id="product9">
+                    <div class="thumbnail">
+                        <img id="thumbnail9" src="http://placehold.it/800x500" alt="">
+                        <div class="caption">
+                            <p id="description9" style="overflow: hidden;">Loading...</p>
+                            <hr class="productHr">
+                            <p id="user-info9" style="margin:0;">
+                            	<span id="user-username9"></span>
+                            	{% if user.is_authenticated and not user.is_staff %}
+                                <span id="product-actions-9"></span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div id="extra9" class="caption2">
+                    		<h4>Thumbnail Headline</h4>
+                    		<p id="big_description9">short thumbnail description</p>
+                    	<p><a  class="btn btn-info" onclick="message_view_create_form();"><i class="fa fa-envelope-o"></i> Send Message</a>
+                    	<p><a id="swap9" class="btn btn-info" ><i class="fa fa-exchange"></i> Join up!</a>
+                    </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div id="pagination-container" class="row text-center">
+
+                <div class="col-md-12">
+                    <ul class="pagination">
+                        <li id="first"><a href="#">«</a>
+                        <li id="last"><a href="#">»</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+       
+
+        <footer>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <p style="margin-left: 15px;">Copyright &copy; Seven Team 2014
+                    <span onmouseout="jQuery(this).css('text-decoration','none');" onmouseover="jQuery(this).css('text-decoration','underline');" onclick="show_legal();refreshLanguage();" style="margin-left: 15px;cursor:pointer;">Legal</span>
+                    <span id="contact_id" onmouseout="jQuery(this).css('text-decoration','none');" onmouseover="jQuery(this).css('text-decoration','underline');" onclick="show_contact_form();refreshLanguage();" style="margin-left: 15px;cursor:pointer;">Contact</span>   <!--i18-->
+                    &nbsp; &nbsp; <a id="about_us" href="http://www.seventeam.tk">About us</a>  
+                        <span style="float: right; margin-right:20px; border: 1px;
+                                                            border-style: outset;
+                                                            padding: 5px;">
+                        <a id="i18n_es" href="#" onclick="loadBundles('es');jQuery(this).parent().addClass('active');jQuery('#i18n_en').parent().removeClass('active');" >es</a> &nbsp;|&nbsp;
+                          <a id="i18n_en" href="#" onclick="loadBundles('en');jQuery(this).parent().addClass('active');jQuery('#i18n_es').parent().removeClass('active');">en</a>
+                        </span> <!--/i18-->
+                    </p>
+                  
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Javascript -->
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+	<script type="text/javascript" src="../static/js/external/jquery.validate.js"></script>
+	
+    
+    <!-- JavaScript -->
+    <script src="../static/js/external/Bootstrap/bootstrap.js"></script>
+    
+
+    
+	<script type="text/javascript" src="../static/js/external/Bootstrap/bootstrap.js"></script>
+	<script type="text/javascript" src="../static/js/external/Bootstrap/bootstrap.min.js"></script>
+	
+	<!-- Datetimepicker -->
+	<script type="text/javascript" src="../static/js/external/bootstrap-datepicker.js"></script>
+    
+    
+    <!-- Google Maps -->
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&amp;language=en"></script>
+    <script type="text/javascript" src="../static/js/external/gmap3.js"></script>
+    
+	<script type="text/javascript" src="../static/js/external/star-rating.js"></script>  
+	<script type="text/javascript" src="../static/js/external/star-rating.min.js"></script> 
+
+    
+    <!-- Table sorter -->
+    <script src="../static/js/external/jquery.tablesorter.js"></script>
+    <script src="../static/js/external/jquery.tablecloth.js"></script>
+    <script src="../static/js/external/jquery.metadata.js"></script>
+    
+    <!-- jQuery Cookie plugin -->
+    <script src="../static/js/external/jquery.cookie.js"></script>
+    
+    <!-- i18n -->
+    <script src="../static/js/external/jquery.i18n.properties.js"></script>
+    <script src="/static/js/SwappingApp/i18.js"></script>
+    
+    <!-- jQuery Boostrap Validator -->
+    <script type="text/javascript" src="../static/js/external/bootstrapValidator.js"></script>
+	
+	<!-- Boostrap Jquery Confirmation Tooltip -->
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.1/js/bootstrap-tooltip.js"></script>
+	<script type="text/javascript" src="../static/js/external/bootstrap-confirmation.js"></script>
+    
+    
+    <!-- Upload Images With Drag and Drop -->
+    <script src="../static/js/external/dropzone.js"></script>
+    <script src="../static/js/external/dropzone-amd-module.js"></script>
+    
+    
+    <!-- jQuery Time Format -->
+    <script src="../static/js/external/jquery-dateFormat.js"></script>
+   
+    
+    <!-- Xeditable -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+    
+	<!-- Notifications -->
+	<script type="text/javascript" src="../static/js/external/pnotify.custom.min.js"></script>
+	
+	<!-- Gallery -->
+	<script src="http://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+	
+	<!-- Clockpicker -->
+	<script src="../static/js/external/clockpicker.js"></script>
+
+
+	
+    <script src="/static/js/SwappingApp/views/item_view.js"></script>
+    <script src="/static/js/SwappingApp/controllers/item_controller.js"></script>
+    <script src="/static/js/SwappingApp/views/service_view.js"></script>
+    <script src="/static/js/SwappingApp/controllers/service_controller.js"></script>
+    <script src="/static/js/SwappingApp/views/message_view.js"></script>
+    <script src="/static/js/SwappingApp/controllers/message_controller.js"></script>
+    <script src="/static/js/SwappingApp/views/user_view.js"></script>
+    <script src="/static/js/SwappingApp/views/administrator_view.js"></script>
+    <script src="/static/js/SwappingApp/controllers/administrator_controller.js"></script>
+    <script src="/static/js/SwappingApp/views/product_view.js"></script>
+    <script src="/static/js/SwappingApp/controllers/product_controller.js"></script>
+    <script src="/static/js/SwappingApp/views/shopping_cart_view.js"></script>
+    <script src="/static/js/SwappingApp/controllers/shopping_cart_controller.js"></script>
+    <script src="/static/js/SwappingApp/views/swapping_with_money_view.js"></script>
+    <script src="/static/js/SwappingApp/controllers/swapping_with_money_controller.js"></script>
+    <script src="/static/js/SwappingApp/controllers/swapping_without_money_controller.js"></script>
+    <script src="/static/js/SwappingApp/views/swapping_without_money_view.js"></script>
+    <script src="/static/js/SwappingApp/util.js"></script>
+    <script src="/static/js/SwappingApp/controllers/user_controller.js"></script>
+    <script src="/static/js/SwappingApp/views/complaint_view.js"></script>
+    <script src="/static/js/SwappingApp/controllers/complaint_controller.js"></script>
+     <script src="/static/js/SwappingApp/views/search_view.js"></script>
+     <script src="/static/js/SwappingApp/views/credit_view.js"></script>
+    <script src="/static/js/SwappingApp/controllers/search_controller.js"></script>
+    <script src="/static/js/SwappingApp/controllers/comment_controller.js"></script>
+    <script src="/static/js/SwappingApp/controllers/credit_controller.js"></script>
+    
+    
+    {% if paypal_success %}
+		<script type="text/javascript">
+			display_success_notification('PayPal Trasaction','Paypal Transaction  has been effected satisfactorily.','fa fa-check');
+			swapping_with_money_view_show_all({% block usersettings4 %} {{user.id}} {%endblock%});
+		</script>
+	{% endif %}
+    
+    <script>
+    	product_controller_get_premium();
+    	product_controller_get_trending_products();
+    </script>
+    
+    <script type="text/javascript">
+    	shopping_cart_view_check_exists_items();
+    </script>
+    
+    <!-- Pruebas para el service -->
+
+    <script type="text/javascript">
+    	product_controller_get_all(1);
+        
+    	
+    	function returnLang(){
+    		var home = jQuery.i18n.prop("home");
+    		var lang;
+    		if (home=="Home"){
+    			lang = "en";
+    		}else{
+    			lang = "es";
+    		}
+    		return lang;
+    	}
+    	
+    	function refreshLanguage(){
+    		if (returnLang() == 'es'){
+    			var es='es';
+    			loadBundles(es);
+    		}
+    	}
+    </script>
+    
+    
+
+
+</body>
+
+</html>
+

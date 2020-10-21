@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Swapping</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+	<script type="text/javascript" src="http://jzaefferer.github.com/jquery-validation/jquery.validate.js"></script>
+    
+    <!-- JavaScript -->
+    <script src="../../static/js/external/Bootstrap/bootstrap.js"></script>
+    
+    <!-- Table sorter -->
+    <script src="../../static/js/external/jquery.tablesorter.js"></script>
+    
+    <!-- jQuery Cookie plugin -->
+    <script src="../../static/js/external/jquery.cookie.js"></script>
+    
+    <!-- i18n -->
+    <script src="../../static/js/external/jquery.i18n.properties.js"></script>
+    <script src="/static/js/SwappingApp/i18.js"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../static/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="../../static/css/swapping.css" rel="stylesheet">
+    
+    <script src="/static/js/SwappingApp/views/user_view.js"></script>
+    <script src="/static/js/SwappingApp/views/administrator_view.js"></script>
+    <script src="/static/js/SwappingApp/controllers/administrator_controller.js"></script>
+    <script src="/static/js/SwappingApp/views/product_view.js"></script>
+    <script src="/static/js/SwappingApp/controllers/product_controller.js"></script>
+    <script src="/static/js/SwappingApp/util.js"></script>
+    <script src="/static/js/SwappingApp/controllers/user_controller.js"></script>
+    
+    <script src="/static/js/SwappingApp/views/message_view.js"></script>
+    <script src="/static/js/SwappingApp/controllers/message_controller.js"></script>
+
+</head>
+
+<body>
+	<figure id="figure_loading" style="padding:0 3em;overflow:visible;"><div></div></figure>
+	
+    <div class="container">
+
+        <div class="row headerback">
+            <div class="col-md-8">
+                <img class="img-responsive img-rounded" src="../static/images/littleLogoSwappin.jpg">
+                <!-- take out img-rounded if you don't want the rounded corners on the image -->
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row" style="margin: 0;">
+            <div class="col-md-12">
+                <nav class="navbar navbar-default" role="navigation">
+                  <div class="container-fluid">
+                    <!-- Brand and toggle get grouped for better mobile display -->
+                    <div class="navbar-header">
+                      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                      </button>
+                    </div>
+
+                    <!-- Collect the nav links, forms, and other content for toggling -->
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                      <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Link</a></li>
+                        <li><a id="i18n_es" href="#" onclick="loadBundles('es');jQuery(this).parent().addClass('active');jQuery('#i18n_en').parent().removeClass('active');" >es</a></li>
+                        <li><a id="i18n_en" href="#" onclick="loadBundles('en');jQuery(this).parent().addClass('active');jQuery('#i18n_es').parent().removeClass('active');">en</a></li>
+                        <li><a href="#">Link</a></li>
+                        {% if user.is_authenticated %}
+                        <li class="dropdown">
+                          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin Profile <b class="caret"></b></a>
+                          <ul class="dropdown-menu">
+                            <li><a href="#" onclick="administrator_controller_get({% block title %} {{user.id}} {%endblock%});">My Profile</a></li>
+                            <li><a href="# " onclick="administrator_view_show_form();">Add Admin</a></li>
+                            <!--  <li><a href="#">Something else here</a></li>-->
+                            <li class="divider"></li>
+                            <li><a href="#" onclick="administrator_controller_logout();">Logout</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Ban user</a></li>
+                          </ul>
+                        </li>
+                        {% endif %}
+                      </ul>
+                       {% if not user.is_authenticated %}
+                       <ul class="nav navbar-nav navbar-right" style="margin-top: 8px;">
+                        <li><button class="btn btn-primary" id="sign_in_i18n" data-toggle="modal" data-target=".bs-example-modal-sm">Login <span class="glyphicon glyphicon-user"></span></button></li>
+
+                        <!-- Small modal -->
+                       
+                       <div id="loginModal" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+                          <div class="modal-dialog">
+                          <div class="modal-content">
+                              <div class="modal-header" id="sign_in_title_i18n">
+                                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                  <h1 class="text-center">Login</h1>
+                              </div>
+                              <div class="modal-body">
+                                  <form method="POST"  id="form_login" action="#" class="form col-md-12 center-block">
+                                  
+                                    <div class="form-group">
+                                      <input name="username" id="username" type="text" class="form-control input-lg" placeholder="Username">
+                                    </div>
+                                    <div class="form-group">
+                                      <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
+                                    </div>
+                                    <div class="form-group">
+			                          	<a href="{% url 'socialauth_begin' 'twitter' %}"><img src="../static/images/sign-in-twitter.png" /></a>
+                                    	<a href="{% url 'socialauth_begin' 'facebook' %}"><img src="../static/images/login-facebook.jpg" /></a>
+                                    	<a href="{% url 'socialauth_begin' 'google-oauth2' %}"><img src="../static/images/sign_in_with_google.jpg" /></a>
+                                    </div>
+                                    <div class="form-group">
+                                      <button class="btn btn-primary btn-lg btn-block" onclick="person_login();">Sign In</button>
+                                      <span class="pull-right"><a href="#" id="sign_in_register" onclick="user_view_create_forms(null);" data-dismiss="modal">Register</a></span><span><a id="sign_in_help" href="#">Need help?</a></span>
+                                    </div>
+                                  </form>
+                              </div>
+                              <div class="modal-footer" style="border-top: 0px;">
+                                  <div class="col-md-12">
+                                  <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                  </div>    
+                              </div>
+                          </div>
+                          </div>
+                          
+                        </div><!-- modal -->
+                       
+                      </ul><!-- /.navbar-right -->
+                      {% endif %} 
+                    </div><!-- /.navbar-collapse -->
+                  </div><!-- /.container-fluid -->
+                </nav>
+            </div>
+        </div>
+
+        <div class="col-md-9" id="content-body">
+            <!-- advertises -->
+           	{% csrf_token %}
+			<button type="button" class="button" onClick="message_view_create_form()"> Create Message</button>
+			{% csrf_token %}
+			{% csrf_token %}
+			<button type="button" class="button" onClick="show_all_message()"> Show Message</button>
+          	{% csrf_token %}
+
+            <div class="row text-center">
+
+                <div class="col-md-12">
+                 
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!--advertises colum-->
+
+        <!--sides-->
+         <div class="col-md-3">
+            <div class="well" id="search-box">
+                <h4>Search products!</h4>
+                <div class="input-group">
+                    <input type="text" class="form-control">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+                <!-- /input-group -->
+            </div>
+            <!-- /well -->
+            
+            <div class="well">
+                <h4>Featured sales</h4>
+                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                  <!-- Indicators -->
+                  <ol class="carousel-indicators">
+                    <!--  <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>-->
+                  </ol>
+					
+                  <!-- Wrapper for slides -->
+                  <div class="carousel-inner" id="carrousel_premium">
+                    
+                    
+                  </div> 
+
+                  <!-- Controls -->
+                  <a class="carousel-control" href="#carousel-example-generic" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                  </a>
+                  <a class="carousel-control" href="#carousel-example-generic" data-slide="next" style="right: 0; left: auto;">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                  </a>
+                </div>
+            </div>
+            <script>
+                    	product_controller_get_premium();
+                    </script>
+            <!-- /well -->
+        </div>
+
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Company 2013</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    
+
+</body>
+
+</html>

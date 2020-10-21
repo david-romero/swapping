@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns = "http://www.w3.org/ns/widgets"
+    xmlns:gap = "http://phonegap.com/ns/1.0"
+    id        = "com.swapping"
+    version   = "1.0.0">
+
+<name>Swapping</name>
+
+<description>
+Swap products and services with other people without having to concern about
+shipping and payment, also you can do swaps in person.
+</description>
+
+<author href="http://www.seventeam.es" email="swappingapp@gmail.com">
+Seven Team Inc.
+</author>
+
+<icon src="/static/images/icon.png" gap:role="default" />
+
+</widget>

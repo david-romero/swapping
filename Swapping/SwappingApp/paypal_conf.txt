@@ -1,0 +1,2 @@
+PayPalClientId  : Ae1pKBCvRfFGO1b79mkBbFG2WGCXLCRN72azuy64IM50n9o0YuodZqZLeTx_
+PayPalKeySecret : EGYvNBBl4T7S77xWrncN35MwttCcH-VmQpYLYuj-l6qM02np_w4e4wgDCaRh
